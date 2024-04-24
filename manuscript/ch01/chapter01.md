@@ -2,11 +2,12 @@
 
 ## Prerequisites
 
-To follow along with the examples in this book, you need the following:
-* A good working knowledge of the C# language.
+To follow along with the examples in this book, you need a good working knowledge of the C# language.
   - *Neither C# nor .NET is explained in detail in this book.*
-* This book was written using `zsh` on a Mac. The commands are mostly limited to `cd` to change director, `ls` to list files, and the `dotnet` command line program to run the tests.
-* The IDE used is *Visual Studio Code* (VS Code) with the *C# Dev Kit* extension.
+
+This book was written using `zsh` on a Mac. The commands are mostly limited to `cd` to change director, `ls` to list files, and the `dotnet` command line program to run the tests.
+
+The integrated development environment (IDE) used for this book is *Visual Studio Code* (VS Code) with the *C# Dev Kit* extension.
 
 ### Fundamentals of C#
 
@@ -15,9 +16,12 @@ Jeff Fritz has an innovative and comprehensive video training series designed to
 ## Get C# Running Locally
 
 You can get all of the things you need to build and test with C# locally on your Mac or PC.
-* [.NET 8.0](https://dotnet.microsoft.com/en-us/download) or later
-* [Visual Studio Code](https://code.visualstudio.com/) version 1.88 or later
-* [C# Dev Kit](https://learn.microsoft.com/en-us/visualstudio/subscriptions/vs-c-sharp-dev-kit) extension
+
+[.NET 8.0](https://dotnet.microsoft.com/en-us/download) or later
+
+[Visual Studio Code](https://code.visualstudio.com/) version 1.88 or later
+
+[C# Dev Kit](https://learn.microsoft.com/en-us/visualstudio/subscriptions/vs-c-sharp-dev-kit) extension
 
 There are instructions at [Testing in C# in Visual Studio Code](https://code.visualstudio.com/docs/languages/dotnet)
 
@@ -59,9 +63,6 @@ The code examples will use the following directory structure:
     ├── ch02
     ├── ch03
     ├── ch04
-    ├── ch05
-    ├── ch06
-    └── ch07
 ...
 ```
 
@@ -75,20 +76,18 @@ $ cd code/ch01
 
 NOTE: For the examples in the rest of the book, we’ll save a little clutter by dropping the `$` symbol the shows the command prompt.
 
-### 3. Check the .NET version
+### 2. Check the .NET version
 
 Inside the `ch01` directory, run the following command to check the .NET version.
-
 ```zsh
 dotnet --version
 ```
 
 The output should show a value of `8.0` or greater. If not, double-check your .NET installation.
 
-### 2. Create a new solution file
+### 3. Create a new solution file
 
 Inside the `ch01` directory, run the following command to create a new solution file for the class library and the test project:
-
 ```zsh
 dotnet new sln
 ```
@@ -96,10 +95,7 @@ dotnet new sln
 The output should show:
 *The template "Solution File" was created successfully.*
 
-Next, create a *GettingStarted* directory.
-
-The following outline shows the directory and file structure so far:
-
+Next, create a *GettingStarted* directory. The following outline shows the directory and file structure so far:
 ```zsh
 .
 └── ch01
@@ -110,19 +106,16 @@ The following outline shows the directory and file structure so far:
 Now, use the `cd` command to make *GettingStarted* the current directory.
 
 Run the following command to create the source project:
-
 ```zsh
 dotnet new classlib
 ```
 
 Rename the *Class1.cs* file to *GettingStarted.cs*, using the following command:
-
 ```zsh
 mv Class1.cs GettingStarted.cs
 ```
 
 Change the directory back to the *ch01* directory. The following outline shows the directory and file structure so far:
-
 ```zsh
 .
 └── ch01
@@ -133,7 +126,6 @@ Change the directory back to the *ch01* directory. The following outline shows t
 ```
 
 Run the following command to add the class library project to the solution:
-
 ```zsh
 dotnet sln add GettingStarted/GettingStarted.csproj
 ```
@@ -147,14 +139,12 @@ The output should show:
 For these examples, the IDE used is [Visual Studio Code on macOS](https://code.visualstudio.com/docs/setup/mac). The explanations run VS Code from the terminal by typing `code` because VS Code was added to the path.
 
 If your terminal directory is in the right place, running the `pwd` command should return a path like this:
-
 ```zsh
 $ pwd
 /Users/sdr/upskill-in-testing-with-csharp/code/ch01
 ```
 
 To open VS Code in the current directory, run the following command.
-
 ```zsh
 code .
 ```
