@@ -6,7 +6,7 @@ namespace Getting.Started
     {
         public bool IsPassing()
         {
-            throw new NotImplementedException("Not there yet!");
+            return true;
         }
     }
 }
