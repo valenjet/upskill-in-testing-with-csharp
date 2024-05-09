@@ -44,5 +44,228 @@ By emphasizing thinking in small increments, the TDD cycle promotes a focused, e
 
 In [this blog post](https://www.kaizenko.com/what-is-test-driven-development-tdd/), Fadi Stephan illustrates the TDD Cycle like this:
 
-<img src="https://www.kaizenko.com/wp-content/uploads/2019/06/kaizenko-Test-Driven-Development-TDD.png" alt="The TDD Cycle" width="40%">
+**TODO:** insert "The TDD Cycle" image
+
+## Before We Start Coding
+
+Let's look at the lines in our `TestScaleConverter.cs` file.
+
+```csharp
+using Physics.Temperature;
+
+namespace Tests.Unit.Physics.Temperature;
+
+public class TestScaleConverter
+{
+    [Test]
+    [Ignore("Not yet started")]
+    public void Test_FahrenheitToCelsius_When32f_Expect0c()
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        var actual = classUnderTest.FahrenheitToCelsius(32);
+
+        // Assert
+        Assert.That(actual, Is.EqualTo(0));
+    }
+}
+```
+
+The `Ignore` attribute tells the NUnit runner to skip the `Test_FahrenheitToCelsius_When32f_Expect0c` test method. The `reason` parameter is optional, but it’s usually helpful to provide a reason.
+
+The `Ignore` attribute is a better mechanism than commenting out the test or renaming methods, since the tests will be compiled with the rest of the code and there is an indication at run time that a test is not being run.
+
+Running this command:
+```bash
+dotnet test
+```
+
+Returns the following output:
+```bash
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  TemperatureConverter -> /Users/ ... /code/ch02/TemperatureConverter/bin/Debug/net8.0/TemperatureConverter.dll
+  Tests.TemperatureConverter -> /Users/ ... /code/ch02/Tests.TemperatureConverter/bin/Debug/net8.0/Tests.TemperatureConverter.dll
+Test run for /Users/ ... /code/ch02/Tests.TemperatureConverter/bin/Debug/net8.0/Tests.TemperatureConverter.dll (.NETCoreApp,Version=v8.0)
+Microsoft (R) Test Execution Command Line Tool Version 17.9.0 (arm64)
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Skipped Test_FahrenheitToCelsius_When32f_Expect0c [1 ms]
+
+Skipped! - Failed:     0, Passed:     0, Skipped:     1, Total:     1, Duration: 1 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+Notice the message ... **Skipped!** ... **Skipped:     1**
+
+The one test was skipped because the `Ignore` attribute is used as a tag to indicate this method should be skipped.
+
+Okay, assuming you have the one skipped test, you are all set to start this code kata.
+
+## Fahrenheit to Celsius Code Kata
+
+Allow me to explain *why* we might want to build a Fahrenheit to Celsius converter.
+
+I have several cousins who live in Ireland. Like much of the world, the local temperature there is reported using the Celsius scale. However, I live in the U.S. and our local temperature is reported using the Fahrenheit scale.
+
+Occasionally, while my cousins and I are messaging, I'd like to convert today's temperature in Fahrenheit to Celsius, so that I can chat with them about the weather.
+
+Let's write this need as a use case:
+```text
+As a friendly cousin,
+I want to convert temperature in degrees Fahrenheit to degrees Celsius,
+So that I can chat about the weather with my Irish cousins.
+```
+
+In this chapter, we will use TDD to write a C# program to convert a temperature in degrees Fahrenheit to its equivalent in degrees Celsius.
+
+## Iteration 1
+
+### Step 1: Think (🤔)
+
+Don't just think; _think small_.
+
+*Question:* What is the absolutely smallest behavior you can think of?
+
+For me, the smallest behavior is about the freezing temperature. I know that if it's 32°F outside then I say it's freezing. And I know that that's 0°C.
+
+Let's make that our first test.
+
+We want to test a temperature converter function named `FahrenheitToCelsius` and check that it returns 0.
+
+### Step 2: Test (red 🔴)
+
+In this step, you want to have one (and only one) failing test.
+
+We will remove the `Ignore` attribute on the `Test_FahrenheitToCelsius_When32f_Expect0c` method.
+
+Remove that line and save the `TestScaleConverter.cs` file, so it looks like this:
+
+```csharp
+using Physics.Temperature;
+
+namespace Tests.Unit.Physics.Temperature;
+
+public class TestScaleConverter
+{
+    [Test]
+    public void Test_FahrenheitToCelsius_When32f_Expect0c()
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        var actual = classUnderTest.FahrenheitToCelsius(32);
+
+        // Assert
+        Assert.That(actual, Is.EqualTo(0));
+    }
+}
+```
+
+
+Running this command:
+```bash
+dotnet test
+```
+
+Returns the following output:
+```bash
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  TemperatureConverter -> /Users/ ... /code/ch02/TemperatureConverter/bin/Debug/net8.0/TemperatureConverter.dll
+  Tests.TemperatureConverter -> /Users/ ... /code/ch02/Tests.TemperatureConverter/bin/Debug/net8.0/Tests.TemperatureConverter.dll
+Test run for /Users/ ... /code/ch02/Tests.TemperatureConverter/bin/Debug/net8.0/Tests.TemperatureConverter.dll (.NETCoreApp,Version=v8.0)
+Microsoft (R) Test Execution Command Line Tool Version 17.9.0 (arm64)
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed Test_FahrenheitToCelsius_When32f_Expect0c [5 ms]
+  Error Message:
+   System.NotImplementedException : Not yet started!
+  Stack Trace:
+     at Physics.Temperature.ScaleConverter.FahrenheitToCelsius(Int32 value) in /Users/ ... /code/ch02/TemperatureConverter/ScaleConverter.cs:line 6
+   at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When32f_Expect0c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 14
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 5 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+Notice the message ... **Failed!  - Failed:     1**
+
+Your one test failed because you haven't created the implementation yet. See the *Error Message:* line `System.NotImplementedException : Not yet started!`
+
+But that's a good thing; the test failed because **we expected it to fail**.
+
+#### Quieter Test Runner Output 
+
+Up until this point, the examples run the command `dotnet test` without any parameters. Let's use some parameters to generate quieter test runner output. To learn more about .NET test driver used to execute unit tests, see the article: [dotnet test](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-test)
+
+Running this command:
+```bash
+dotnet test -v q --nologo
+```
+
+Returns the following output:
+```bash
+Test run for /Users/ ... /code/ch02/Tests.TemperatureConverter/bin/Debug/net8.0/Tests.TemperatureConverter.dll (.NETCoreApp,Version=v8.0)
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 11 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+For the rest of this chapter, let's adopt this quieter output.
+
+#### Three Rules of TDD
+
+We need to talk about the *Three Rules of TDD*. These three core rules are:
+
+1. Only write production code to make a failing unit test pass.
+2. Only write enough of a unit test to make it fail, including compilation errors.
+3. Write only the necessary amount of production code required to pass the failing unit test.
+
+To learn more: [Canon TDD](https://tidyfirst.substack.com/p/canon-tdd)
+
+
+### Step 3: Code (green 🍏)
+
+To follow the three rules of TDD, we should revise the `FahrenheitToCelsius()` method only enough to make the failing unit test pass, as follows:
+
+```csharp
+namespace Physics.Temperature;
+
+public class ScaleConverter
+{
+    public int FahrenheitToCelsius(int value){
+        return 0;
+    }
+}
+```
+
+Running:
+```bash
+dotnet test -v q --nologo
+```
+
+Returns:
+```bash
+Test run for /Users/ ... /code/ch02/Tests.TemperatureConverter/bin/Debug/net8.0/Tests.TemperatureConverter.dll (.NETCoreApp,Version=v8.0)
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 5 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+### Huzzah!
+
+There's the message in the output ... **Passed!**  ... **Passed:     1**
+
+We have 1 passing test! 🎉
 

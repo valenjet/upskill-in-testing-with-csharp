@@ -292,9 +292,11 @@ A total of 1 test files matched the specified pattern.
 Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 4 ms - Tests.GettingStarted.dll (net8.0)
 ```
 
-Your test fails. You haven't created the implementation yet.
+Notice the message ... **Failed!  - Failed:     1**
 
-So, the test failed because **we expected it to fail**.
+Your one test failed because you haven't created the implementation yet.
+
+But that's a good thing; the test failed because **we expected it to fail**.
 
 ## Why start with a failing test?
 
@@ -343,4 +345,6 @@ A total of 1 test files matched the specified pattern.
 Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 1 ms - Tests.GettingStarted.dll (net8.0)
 ```
 
-And, there it is ... "1 passed"
+And, there's the message ... **Passed!**  ... **Passed:     1**
+
+Your one test passed.

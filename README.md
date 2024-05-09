@@ -17,7 +17,7 @@ If you know your Windows or Unix shell, all examples should be runnable on the t
 
 This book won't show you how to use another integrated development environment (IDE). If you know your IDE, all examples should be runnable in the IDE that you choose to use.
 
-## 
+## Clone this repository
 
 Clone this repository to create a local copy on your computer.
 
