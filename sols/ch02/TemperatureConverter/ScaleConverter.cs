@@ -3,6 +3,6 @@
 public class ScaleConverter
 {
     public int FahrenheitToCelsius(int value){
-        return 0;
+        return (5 * (value -32)) / 9;
     }
 }
