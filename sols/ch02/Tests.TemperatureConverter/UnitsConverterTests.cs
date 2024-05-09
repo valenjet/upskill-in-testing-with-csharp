@@ -1,14 +1,14 @@
-using Temperature.Helpers;
+using Physics.Temperature;
 
-namespace Tests.Temperature.Helpers;
+namespace Tests.Unit.Physics.Temperature;
 
-public class UnitsConverterTests
+public class TestUnitsConverter
 {
     [Test]
-    public void Convert_When32f_Expect0c()
+    public void Test_FahrenheitToCelsius_When32f_Expect0c()
     {
         // Arrange
-        var classUnderTest = new UnitsConverter();
+        var classUnderTest = new ScaleConverter();
 
         // Act
         var actual = classUnderTest.FahrenheitToCelsius(32);
