@@ -1,6 +1,6 @@
-﻿namespace Temperature.Helpers;
+﻿namespace Physics.Temperature;
 
-public class UnitsConverter
+public class ScaleConverter
 {
     public int FahrenheitToCelsius(int value){
         throw new NotImplementedException("Not yet started!");
