@@ -114,11 +114,10 @@ I have several cousins who live in Ireland. Like much of the world, the local te
 Occasionally, while my cousins and I are messaging, I'd like to convert today's temperature in Fahrenheit to Celsius, so that I can chat with them about the weather.
 
 Let's write this need as a use case:
-```text
-As a friendly cousin,
-I want to convert temperature in degrees Fahrenheit to degrees Celsius,
-So that I can chat about the weather with my Irish cousins.
-```
+
+> As a friendly cousin,
+> I want to convert temperature in degrees Fahrenheit to degrees Celsius,
+> So that I can chat about the weather with my Irish cousins.
 
 In this chapter, we will use TDD to write a C# program to convert a temperature in degrees Fahrenheit to its equivalent in degrees Celsius.
 
@@ -280,12 +279,12 @@ public class ScaleConverter
 }
 ```
 
-Running:
+Execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
 
@@ -299,7 +298,7 @@ There's the message in the output ... **Passed!**  ... **Passed:     1**
 We have 1 passing test! 🎉
 
 
-### Step 4: Refactor (tidy 🧹)
+### Step 4: Refactor (tidy 🔧)
 
 In this step, we want to clean up or refactor our code.
 
@@ -365,12 +364,12 @@ public class TestScaleConverter
 
 Save the `TestScaleConverter.cs` file.
 
-Running:
+Execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
   Failed Test_FahrenheitToCelsius_When212f_Expect100c [17 ms]
@@ -426,12 +425,12 @@ public class ScaleConverter
 
 Save the `ScaleConverter.cs` file.
 
-Now, running:
+Now, execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
 
@@ -446,7 +445,7 @@ There's the message in the output ... **Passed!**  ... **Passed:     2**
 We have 2 passing tests! 🎉
 
 
-### I2 - Step 4: Refactor (tidy 🧹)
+### I2 - Step 4: Refactor (tidy 🔧)
 
 Again, nothing says we have to refactor. If we're happy with everything as it stands, we can certainly move on to the next iteration and Step 1.
 
@@ -469,7 +468,7 @@ Based on some common knowledge and a bit of temperature conversion trivia, we ma
 With that information, we can create a "truth table".
 
 | Fahrenheit   | Celsius     |
-|-------------:|------------:|
+|--------------|-------------|
 |       32°F   |       0°C   |
 |      212°F   |     100°C   |
 |      -40°F   |     -40°C   |
@@ -506,12 +505,12 @@ public class TestScaleConverter
 
 Save the `TestScaleConverter.cs` file.
 
-Running:
+Execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
   Failed Test_FahrenheitToCelsius_WhenMinus40f_ExpectMinus40c [20 ms]
@@ -559,12 +558,12 @@ public class ScaleConverter
 
 Save the `ScaleConverter.cs` file.
 
-Now, running:
+Now, execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
 
@@ -581,7 +580,7 @@ We have 3 passing tests! 🎉
 
 
 
-### I3 - Step 4: Refactor (tidy 🧹)
+### I3 - Step 4: Refactor (tidy 🔧)
 
 Let's skip the refactoring step and move to the next iteration.
 
@@ -597,7 +596,7 @@ From a conversion chart we find on the internet, we might learn another fact:
 Let's add that to our "truth table".
 
 | Fahrenheit   | Celsius     |    |
-|-------------:|------------:|---:|
+|--------------|-------------|----|
 |       32°F   |       0°C   | ✅ |
 |      212°F   |     100°C   | ✅ |
 |      -40°F   |     -40°C   | ✅ |
@@ -630,12 +629,12 @@ public void Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c()
 
 Save the `TestScaleConverter.cs` file.
 
-Now, running:
+Now, execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
   Failed Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c [13 ms]
@@ -644,9 +643,9 @@ A total of 1 test files matched the specified pattern.
   But was:  0
 
   Stack Trace:
-     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
 
-1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
 
 
 
@@ -654,7 +653,7 @@ Failed!  - Failed:     1, Passed:     3, Skipped:     0, Total:     4, Duration:
 ```
 
 
-### I3 - Step 3: Code (green 🟩)
+### I3 - Step 3: Code (green ✅)
 
 Let's write just enough code to make all the tests pass.
 
@@ -679,12 +678,12 @@ public class ScaleConverter
 }
 ```
 
-Running:
+Execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
 
@@ -696,14 +695,14 @@ All four tests are passing!
 And the truth table looks like this:
 
 | Fahrenheit   | Celsius     |    |
-|-------------:|------------:|---:|
+|--------------|-------------|----|
 |       32°F   |       0°C   | ✅ |
 |      212°F   |     100°C   | ✅ |
 |      -40°F   |     -40°C   | ✅ |
 |       -4°F   |     -20°C   | ✅ |
 
 
-### I3 - Step 4: Refactor (tidy 🧹)
+### I3 - Step 4: Refactor (tidy 🔧)
 
 We could go on forever with the truth table concept, but we want to handle any arbitrary temperature in degrees Fahrenheit and convert it to the correct degrees Celsius.
 
@@ -715,14 +714,12 @@ So, this is the right place to restructure the code-under-test so as to improve 
 Let's ask the team's Business Analyst to provide us with the formula.
 
 Here is what we get:
-```text
-To convert temperatures in degrees Fahrenheit to Celsius, 
-multiply by 9, divide by 5, and add 32.
 
-celsius = ((fahrenheit * 9) / 5) + 32
-
-Example: ((-40°F * 9) / 5) + 32 = -40°C
-```
+> To convert temperatures in degrees Fahrenheit to Celsius, multiply by 9, divide by 5, and add 32.
+> 
+> celsius = ((fahrenheit * 9) / 5) + 32
+> 
+> Example: ((-40°F * 9) / 5) + 32 = -40°C
 
 And we code it up as follows:
 ```csharp
@@ -738,12 +735,12 @@ public class ScaleConverter
 
 Save the `ScaleConverter.cs` file.
 
-Running:
+Execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
   Failed Test_FahrenheitToCelsius_When212f_Expect100c [17 ms]
@@ -752,9 +749,9 @@ A total of 1 test files matched the specified pattern.
   But was:  413
 
   Stack Trace:
-     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When212f_Expect100c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 30
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When212f_Expect100c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 30
 
-1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When212f_Expect100c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 30
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When212f_Expect100c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 30
 
 
   Failed Test_FahrenheitToCelsius_When32f_Expect0c [< 1 ms]
@@ -763,9 +760,9 @@ A total of 1 test files matched the specified pattern.
   But was:  89
 
   Stack Trace:
-     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When32f_Expect0c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 17
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When32f_Expect0c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 17
 
-1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When32f_Expect0c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 17
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When32f_Expect0c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 17
 
 
   Failed Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c [< 1 ms]
@@ -774,16 +771,16 @@ A total of 1 test files matched the specified pattern.
   But was:  25
 
   Stack Trace:
-     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
 
-1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/sdr/training/valenjet/upskill-in-testing-with-csharp/sols/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus4f_ExpectMinus20c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 56
 
 
 
 Failed!  - Failed:     3, Passed:     1, Skipped:     0, Total:     4, Duration: 18 ms - Tests.TemperatureConverter.dll (net8.0)
 ```
 
-Oh no! 🤯
+Oh no!
 
 We got 3 failed tests! What happened!?!
 
@@ -808,13 +805,13 @@ We should be able to use a calculator to show that the formula does not work for
 Now that that's all cleared up, we receive the correct formula.
 
 The correct formula specification is provided as follows:
-```text
-To convert temperatures from Fahrenheit to Celsius
 
-celsius = (5 * (fahrenheit - 32)) / 9
+> To convert temperatures from Fahrenheit to Celsius
+> 
+> celsius = ((fahrenheit - 32) * 5) / 9
+> 
+> Example: ((50°F - 32) * 5) / 9 = 10°C
 
-Example: ((50°F - 32) * 5) / 9 = 10°C
-```
 
 And we code it in the `ScaleConverter.cs` file, up as follows:
 ```csharp
@@ -830,12 +827,12 @@ public class ScaleConverter
 
 Save the `ScaleConverter.cs` file.
 
-Running:
+Execute unit tests by running:
 ```bash
 dotnet test -v m --nologo
 ```
 
-Returns:
+This returns the following output:
 ```bash
 A total of 1 test files matched the specified pattern.
 
@@ -848,4 +845,348 @@ Passed!  - Failed:     0, Passed:     4, Skipped:     0, Total:     4, Duration:
 There's the message in the output ... **Passed!**  ... **Passed:     4**
 
 We have 4 passing tests! 🎉
+
+
+#### Refactoring
+
+As the name suggests, refactoring is done in the "Refactor" step of the TDD cycle.
+
+Refactoring allows you to improve the structure and clarity of the code without changing its behavior. The automated tests are there to help.
+
+The automated tests you've built up in prior TDD iterations play a crucial role in supporting refactoring. They provide a _safety net_ that helps ensure the behavior of the code-under-test remains unchanged while that code is modified, restructured, or otherwise improved.
+
+Good automated testing liberates refactoring.
+
+
+## Iteration 4
+
+Let's get real and talk about the real number line.
+
+
+### I4 - Step 1: Think (🤔)
+
+There are many numbers between the whole numbers we've been testing so far.
+
+In the U.S., people often hear that 98.6°F is the normal body temperature. Converting that to the Celsius scale, we get 37°C.
+
+So, let's write a test that checks that 98.6°F = 37°C.
+
+### I4 - Step 2: Test (red 🔴)
+
+Here's that new test method:
+```csharp
+[Test]
+public void Test_FahrenheitToCelsius_When98pt6f_Expect37c()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    var actual = classUnderTest.FahrenheitToCelsius(98.6);
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(37));
+}
+```
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  TemperatureConverter -> /Users/ ... /code/ch02/TemperatureConverter/bin/Debug/net8.0/TemperatureConverter.dll
+/Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs(66,57): error CS1503: Argument 1: cannot convert from 'double' to 'int' [/Users/ ... /code/ch02/Tests.TemperatureConverter/Tests.TemperatureConverter.csproj]
+```
+
+Wait! ✋
+
+That's not a failing test. That's a compilation error: `cannot convert from 'double' to 'int'`
+
+Well, one of the rules of TDD is *Only write enough of a unit test to make it fail, including compilation errors.* And we've done that.
+
+So, on to the next step.
+
+### I4 - Step 3: Code (green ✅)
+
+Let's write just enough code to allow the tests to pass again. But what's the problem?
+
+The compilation error `cannot convert from 'double' to 'int'` means the .NET compiler disallowed the implicit conversion from double (i.e., 98.6) to int, not because they're not both numbers but because there is potential data loss from the conversion.
+
+In this case we could easily bypass the check and make the compiler happy by using an explicit cast:
+```csharp
+[Test]
+public void Test_FahrenheitToCelsius_When98pt6f_Expect37c()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    var actual = classUnderTest.FahrenheitToCelsius((int)98.6);
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(37));
+}
+```
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+  Failed Test_FahrenheitToCelsius_When98pt6f_Expect37c [12 ms]
+  Error Message:
+     Expected: 37
+  But was:  36
+
+  Stack Trace:
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When98pt6f_Expect37c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 69
+
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When98pt6f_Expect37c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 69
+
+
+
+Failed!  - Failed:     1, Passed:     4, Skipped:     0, Total:     5, Duration: 18 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+That does eliminate the compilation error, but the test now fails because of there's a rounding error. This is the result of the data loss from the conversion.
+
+So, let's not use the explicit cast. Change the test method back to:
+```csharp
+[Test]
+public void Test_FahrenheitToCelsius_When98pt6f_Expect37c()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    var actual = classUnderTest.FahrenheitToCelsius(98.6);
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(37));
+}
+```
+
+Let's try another approach. Perhaps the simplest thing that could possible work is to change the code-under-test in the `ScaleConverter.cs` file so that the method accepts and returns a `double`, like this:
+```csharp
+namespace Physics.Temperature;
+
+public class ScaleConverter
+{
+    public double FahrenheitToCelsius(double value){
+        return (5 * (value -32)) / 9;
+    }
+}
+```
+
+Save the `ScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     5, Skipped:     0, Total:     5, Duration: 5 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+### Huzzah!
+
+There's the message in the output ... **Passed!**  ... **Passed:     5**
+
+We have 5 passing tests! 🎉
+
+### I4 - Step 4: Refactor (tidy 🔧)
+
+One thing we learned in the last steps is that in order to get all the tests to pass we needed to refactor our code. In effect, we combined steps 3 and 4.
+
+Let's go on to the next iteration and get back to thinking.
+
+## Iteration 5
+
+Let's try to cover rounding scenarios.
+
+But there's something you need to know about floating-point arithmetic:
+* Any number that cannot be derived from exact powers of 2 cannot be accurately represented as a floating point number and requires approximation.
+* Occasionally, the closest approximation might be less than the actual number.
+
+Read more at [What Every Computer Scientist Should Know About Floating-Point Arithmetic](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html)
+
+But how do we find these special cases?
+
+### I5 - Step 1: Think (🤔)
+
+Using a calculator (or spreadsheet or Google), we might find that 105.6°F converts to 40.9°C.
+
+Arithmetically, the number 105.6 degrees Fahrenheit equals 40.888889 degrees Celsius (actually, the 8s repeat indefinitely.)
+
+This is a case where floating-point arithmetic might result in a slightly lower approximation due to binary representation limitations.
+
+Let's write a test that checks that 105.6°F = 40.9°C.
+
+### I5 - Step 2: Test (red 🔴)
+
+Here's that new test method:
+```csharp
+[Test]
+public void Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    var actual = classUnderTest.FahrenheitToCelsius(105.6);
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(40.9));
+}
+```
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+  Failed Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c [21 ms]
+  Error Message:
+     Expected: 40.899999999999999d
+  But was:  40.888888888888886d
+
+  Stack Trace:
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 82
+
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 82
+
+
+
+Failed!  - Failed:     1, Passed:     5, Skipped:     0, Total:     6, Duration: 22 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+As expected, only `Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c` failed.
+
+#### Rounding errors
+
+**Problem 1:** The test method is expecting the actual return value to by 40.9, but the test runner output states that `Expected: 40.899999999999999d`. The reason is that 40.9 cannot be derived from *an exact power of 2*. This means that the computer uses the closest floating point approximation, which is 40.899999999999999.
+
+**Problem 2:** A similar problem happens with the return value. The closest floating point approximation is 40.888888888888886.
+
+
+### I5 - Step 3: Code (green ✅)
+
+In order to get all the tests to pass, let's move away from floating point arithmetic (base 2) and use decimal (base 10) arithmetic.
+
+**NOTE:** The type of a real literal (e.g., 105.6) is determined by its suffix. The decimal suffix is `m` or `M`. We'll use this suffix to let the compiler know we want to use decimal numbers.
+
+Here's that new test method:
+```csharp
+[Test]
+public void Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    var actual = classUnderTest.FahrenheitToCelsius(105.6m);
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(40.9m));
+}
+```
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  TemperatureConverter -> /Users/ ... /code/ch02/TemperatureConverter/bin/Debug/net8.0/TemperatureConverter.dll
+/Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs(79,57): error CS1503: Argument 1: cannot convert from 'decimal' to 'double' [/Users/ ... /code/ch02/Tests.TemperatureConverter/Tests.TemperatureConverter.csproj]
+```
+
+This results in a compiler error, which states that it `cannot convert from 'decimal' to 'double'`.
+
+Let's refactor the `FahrenheitToCelsius` method to reflect that we want to pass and return decimal values. The updated code looks like this:
+```csharp
+namespace Physics.Temperature;
+
+public class ScaleConverter
+{
+    public decimal FahrenheitToCelsius(decimal value){
+        return Math.Round((5 * (value -32)) / 9, 1);
+    }
+}
+```
+
+Save the `ScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  TemperatureConverter -> /Users/ ... /code/ch02/TemperatureConverter/bin/Debug/net8.0/TemperatureConverter.dll
+/Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs(66,57): error CS1503: Argument 1: cannot convert from 'double' to 'decimal' [/Users/ ... /code/ch02/Tests.TemperatureConverter/Tests.TemperatureConverter.csproj]
+```
+
+A compiler error in the test code file `TestScaleConverter.cs(66,57)`, which means line 66, column 57 is where we'll find the error.
+```csharp
+var actual = classUnderTest.FahrenheitToCelsius(98.6);
+```
+
+Needs to change to:
+```csharp
+var actual = classUnderTest.FahrenheitToCelsius(98.6m);
+```
+
+The decimal suffix `m` will let the compiler know we want to pass a decimal number.
+
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     6, Skipped:     0, Total:     6, Duration: 5 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+### Huzzah!
+
+There's the message in the output ... **Passed!**  ... **Passed:     6**
+
+We have 6 passing tests! 🎉
+
+
 

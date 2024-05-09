@@ -2,7 +2,7 @@
 
 public class ScaleConverter
 {
-    public int FahrenheitToCelsius(int value){
-        return (5 * (value -32)) / 9;
+    public decimal FahrenheitToCelsius(decimal value){
+        return Math.Round((5 * (value -32)) / 9, 1);
     }
 }
