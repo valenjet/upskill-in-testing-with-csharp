@@ -2,7 +2,7 @@ using Physics.Temperature;
 
 namespace Tests.Unit.Physics.Temperature;
 
-public class TestUnitsConverter
+public class TestScaleConverter
 {
     [Test]
     public void Test_FahrenheitToCelsius_When32f_Expect0c()
