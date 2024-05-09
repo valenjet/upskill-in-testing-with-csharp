@@ -1,7 +1,5 @@
 # Introduction
 
-# Introduction
-
 The introduction introduces you to the main topics of the book and prepares you for what you can expect.
 
 ## Why testing?
