@@ -2,6 +2,12 @@
 
 In this chapter we introduce the concept of a _code kata_ and the fundamentals of test-driven development (TDD).
 
+We'll also introduce the concepts of:
+* The TDD Cycle
+* The Three Rules of TDD
+* TDD guided by a truth table
+* TDD guided by ZOMBIES
+
 ## What is a _code kata_?
 
 _Code kata_ is a term borrowed from martial arts, referring to a practice method in programming where developers engage in repetitive exercises to hone their skills. The idea is to perform these small, self-contained coding challenges repeatedly, each time trying to improve in some way, whether it be in code efficiency, design patterns, speed, or understanding of the language and its features. The term was popularized by Dave Thomas, co-author of "The Pragmatic Programmer," who likened the practice to karate exercises aimed at continuous improvement and mastery of programming techniques.
@@ -42,13 +48,19 @@ With the perspective of focusing on small increments of behavior during the "Thi
 
 By emphasizing thinking in small increments, the TDD cycle promotes a focused, efficient approach to software development. It encourages developers to maintain a narrow scope, reducing the risk of scope creep or becoming overwhelmed by the broader system's complexities. This iterative process leads to a well-designed, well-tested codebase that evolves incrementally with each cycle, ensuring steady progress and high-quality outcomes.
 
-In [this blog post](https://www.kaizenko.com/what-is-test-driven-development-tdd/), Fadi Stephan illustrates the TDD Cycle like this:
+In [this blog post](https://www.kaizenko.com/what-is-test-driven-development-tdd/), Fadi Stephan illustrates the Test Driven Development cycle.
 
-**TODO:** insert "The TDD Cycle" image
+The TDD cycle is:
+1. Think 🤔 -- 
+2. Test 🔴 (often called "Red")
+3. Code ✅ (often called "Green")
+4. Refactor 🔧
+
+![TDD Cycle](../resources/TDD_cycle.png)
 
 ## Before We Start Coding
 
-Let's look at the lines in our `TestScaleConverter.cs` file.
+Let's look at the lines in our `TestScaleConverter.cs` file, which you'll find in the `code/ch02` folder in the sample code.
 
 ```csharp
 using Physics.Temperature;
@@ -131,7 +143,13 @@ Don't just think; _think small_.
 
 For me, the smallest behavior is about the freezing temperature. I know that if it's 32°F outside then I say it's freezing. And I know that that's 0°C.
 
-Let's make that our first test.
+This is our first entry in a "truth table" that we can use to guide our test driven development.
+
+| Fahrenheit   | Celsius     |
+|--------------|-------------|
+|       32°F   |       0°C   |
+
+Let's make that first truth our first test.
 
 We want to test a temperature converter function named `FahrenheitToCelsius` and check that it returns 0.
 
@@ -316,7 +334,14 @@ Again, we have to _think small_.
 
 For me, the next smallest behavior is about the boiling temperature of water. I know from science class that water boils at 212°F and at 100°C.
 
-Let's make that our second test.
+With that information, we can add it to our "truth table".
+
+| Fahrenheit   | Celsius     |
+|--------------|-------------|
+|       32°F   |       0°C   |
+|      212°F   |     100°C   |
+
+Let's make that second truth our second test.
 
 We want to test our `FahrenheitToCelsius()` method and check that it returns 100°C when we pass it 212°F.
 
@@ -465,7 +490,7 @@ Based on some common knowledge and a bit of temperature conversion trivia, we ma
 * 100°C = 212°F
 * -40°C = -40°F
 
-With that information, we can create a "truth table".
+With that information, we can add to to our "truth table".
 
 | Fahrenheit   | Celsius     |
 |--------------|-------------|
@@ -587,10 +612,13 @@ Let's skip the refactoring step and move to the next iteration.
 
 ## Iteration 4
 
+For the first three iterations, we have taken the *TDD guided by a truth table*. In this iteration, learn the value of taking this approach.
 
 ### I4 - Step 1: Think (🤔)
 
-From a conversion chart we find on the internet, we might learn another fact:
+Let's continue with the *TDD guided by a truth table* approach.
+
+Going to a trusted source on the internet, we find a conversion tool that provides another fact for our truth table:
 * -20°C = -4°F
 
 Let's add that to our "truth table".
@@ -704,7 +732,7 @@ And the truth table looks like this:
 
 ### I3 - Step 4: Refactor (tidy 🔧)
 
-We could go on forever with the truth table concept, but we want to handle any arbitrary temperature in degrees Fahrenheit and convert it to the correct degrees Celsius.
+We could go on forever with the truth table approach, but we want to handle any arbitrary temperature in degrees Fahrenheit and convert it to the correct degrees Celsius.
 
 Wiktionary defines [refactor](https://en.wiktionary.org/wiki/refactor) as:
 > To rewrite existing source code in order to improve its readability, reusability or structure without affecting its meaning or behavior.
@@ -1009,6 +1037,18 @@ There's the message in the output ... **Passed!**  ... **Passed:     5**
 
 We have 5 passing tests! 🎉
 
+
+And the testing scenarios now look like this:
+
+| Fahrenheit   | Celsius     |    |
+|--------------|-------------|----|
+|       32°F   |       0°C   | ✅ |
+|      212°F   |     100°C   | ✅ |
+|      -40°F   |     -40°C   | ✅ |
+|       -4°F   |     -20°C   | ✅ |
+|     98.6°F   |      37°C   | ✅ |
+
+
 ### I4 - Step 4: Refactor (tidy 🔧)
 
 One thing we learned in the last steps is that in order to get all the tests to pass we needed to refactor our code. In effect, we combined steps 3 and 4.
@@ -1017,15 +1057,15 @@ Let's go on to the next iteration and get back to thinking.
 
 ## Iteration 5
 
-Let's try to cover rounding scenarios.
+Let's write tests to cover some *rounding scenarios*.
 
-But there's something you need to know about floating-point arithmetic:
+Rounding scenarios are related to how computers handle floating-point arithmetic:
 * Any number that cannot be derived from exact powers of 2 cannot be accurately represented as a floating point number and requires approximation.
 * Occasionally, the closest approximation might be less than the actual number.
 
 Read more at [What Every Computer Scientist Should Know About Floating-Point Arithmetic](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html)
 
-But how do we find these special cases?
+But how do we find these scenarios and special cases?
 
 ### I5 - Step 1: Think (🤔)
 
@@ -1189,4 +1229,706 @@ There's the message in the output ... **Passed!**  ... **Passed:     6**
 We have 6 passing tests! 🎉
 
 
+| Fahrenheit   | Celsius     |    |
+|--------------|-------------|----|
+|       32°F   |       0°C   | ✅ |
+|      212°F   |     100°C   | ✅ |
+|      -40°F   |     -40°C   | ✅ |
+|       -4°F   |     -20°C   | ✅ |
+|     98.6°F   |      37°C   | ✅ |
+|    105.6°F   |    40.9°C   | ✅ |
 
+
+## Iteration 6
+
+It's a good idea to perform boundary-value analysis to cover all scenarios.
+
+Boundary-value analysis is about finding the limits of acceptable values, which includes looking at the following:
+- All invalid values
+- Maximum values
+- Minimum values
+- Values just on a boundary
+- Values just within a boundary
+- Values just outside a boundary
+- Values that behave uniquely, such as zero or one
+
+In his blog post titled [TDD Guided by ZOMBIES](https://blog.wingman-sw.com/tdd-guided-by-zombies), James Grenning describes where to start with Test-Driven Development.
+
+James uses the acronym Z.O.M.B.I.E.S., which spells out:
+* Z – Zero
+* O – One
+* M – Many (or More complex)
+* B – Boundary Behaviors
+* I – Interface definition
+* E – Exercise Exceptional behavior
+* S – Simple Scenarios, Simple Solutions
+
+Let's talk about the last one first; the letter S. It reminds us to keep it simple for both the solutions and the scenarios; *Simple Scenarios, Simple Solutions*.
+
+That's what our truth table did: It kept things simple. So, when the wrong formula was provided, the automated tests revealed the problem with the formula.
+
+During this iteration, let's explore *Zero*.
+
+### I6 - Step 1: Think (🤔)
+
+When it comes to testing software, zero is an important number. It's closely related to *negative testing*, which evaluates whether your code can handle invalid input or unexpected user behavior. Zero is often the "lowest limit" before the input is invalid.
+
+For the thermodynamic temperature scale, *absolute zero* is the lowest limit and minimum value, defined as zero kelvin (or 0°K). This is defined as -273.15°C by international agreement.
+
+You might be wondering: _What is absolute zero in degrees Fahrenheit?_
+
+Reading up at [Wikipedia](https://en.wikipedia.org/wiki/Absolute_zero) you'll find that absolute zero is −459.67°F, which equals −273.15°C.
+
+Our next test can be:
+* −459.67°F = -273.15°C
+
+### I6 - Step 2: Test (red 🔴)
+
+Let's add a failing test to the bottom of the class `TestScaleConverter`.
+```csharp
+
+[Test]
+public void Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    var actual = classUnderTest.FahrenheitToCelsius(-459.67m);
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(-273.15m));
+}
+```
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+  Failed Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c [15 ms]
+  Error Message:
+     Expected: -273.15m
+  But was:  -273.2m
+
+  Stack Trace:
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 95
+
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 95
+
+
+
+Failed!  - Failed:     1, Passed:     6, Skipped:     0, Total:     7, Duration: 22 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+There's our one failing test.
+
+Notice the error message:
+> Failed Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c [15 ms]
+> Error Message:
+>    Expected: -273.15m
+> But was:  -273.2m
+
+This error message indicates that there's a rounding error happening.
+
+### I6 - Step 3: Code (green ✅)
+
+In order to get all the tests to pass, we could first try rounding to 2 decimal places, instead of 1.
+
+Let's make that change in the `ScaleConverter.cs` file, by changing the second parameter of the Round method from 1 to 2.
+```csharp
+namespace Physics.Temperature;
+
+public class ScaleConverter
+{
+    public decimal FahrenheitToCelsius(decimal value){
+        return Math.Round((5 * (value -32)) / 9, 2);
+    }
+}
+```
+
+Save the `ScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+  Failed Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c [18 ms]
+  Error Message:
+     Expected: 40.9m
+  But was:  40.89m
+
+  Stack Trace:
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 82
+
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 82
+
+
+
+Failed!  - Failed:     1, Passed:     6, Skipped:     0, Total:     7, Duration: 19 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+Notice the error message has switched to another test method:
+> Failed Test_FahrenheitToCelsius_When105pt6f_Expect40pt9c [18 ms]
+> Error Message:
+>    Expected: 40.9m
+> But was:  40.89m
+
+So, if we set the rounding parameter to 2 then a previous test we wrote now fails.
+
+There is a conflict in requirements:
+* Implicit (or inferred) requirement: *Round to one decimal place.*
+* Explicit requirement: *Absolute zero is −459.67°F, which equals −273.15°C.*
+
+What is the best way to handle conflicting requirements?
+
+First, our TDD approach has identified the sources of conflict. This is a good thing.
+
+Second, we need to communicate and collaborate with stakeholders (e.g., customers and users) or their representatives (e.g., business analyst or product folks).
+
+Third, as a software developer, you want clear expectations that allow you to eliminate defects. That is, you want the software to do what it's expected to do. It's entirely reasonable to expect that the conversation will result in validated and verified requirements.
+
+For our purposes, let's say that the requirements are resolved this way:
+1. The temperature converter is for chats about the weather.
+2. For the purpose of these conversations, the temperature should round to one decimal place.
+3. Any temperature at or below -130°F is invalid.
+4. Any temperature at or above 1000°F is invalid.
+
+The last two requirements come from the business analyst's approximation of the lowest and highest registered air temperature on Earth.
+
+Given requirement 2 from above, we round to 1 decimal. From requirement 3, we add a guard to throw the expected error.
+
+Make these changes in the `ScaleConverter.cs` file, as follows:
+```csharp
+namespace Physics.Temperature;
+
+public class ScaleConverter
+{
+    public decimal FahrenheitToCelsius(decimal value) {
+        if(value < -130) {
+            throw new ArgumentException("value cannot be less than -130°F");
+        }
+        return Math.Round((5 * (value -32)) / 9, 1);
+    }
+}
+```
+
+Save the `ScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+  Failed Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c [3 ms]
+  Error Message:
+   System.ArgumentException : value cannot be less than -130°F
+  Stack Trace:
+     at Physics.Temperature.ScaleConverter.FahrenheitToCelsius(Decimal value) in /Users/ ... /code/ch02/TemperatureConverter/ScaleConverter.cs:line 7
+   at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 92
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+
+Failed!  - Failed:     1, Passed:     6, Skipped:     0, Total:     7, Duration: 9 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+Well, all the previous tests are failing because the rounding is back to 1 decimal.
+
+However, the `Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c` test is still failing, but it's working as intended.
+
+When the code is *working as intended* and the test is still failing, then our test code is what we need to fix. Let's change the test code to expect the exception.
+
+This means that `Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectMinus273pt15c` need to be renamed to `Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectArgumentException`.
+
+Let's rewrite that failing test, as follows:
+```csharp
+
+[Test]
+public void Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectArgumentException()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    TestDelegate act = () => classUnderTest.FahrenheitToCelsius(-456.67m);
+
+    // Assert
+    Assert.Throws<ArgumentException>(act, "value cannot be less than -130°F");
+}
+```
+
+This test code uses the [Assert.Throws](https://docs.nunit.org/articles/nunit/writing-tests/assertions/classic-assertions/Assert.Throws.html) method in the NUnit testing framework to invoke code snippet, represented as a `TestDelegate`, in order to verify that calling that method-under-test throws `ArgumentException` exception. We will learn more about testing for expected exceptions and various testing frameworks in subsequent chapters.
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     7, Skipped:     0, Total:     7, Duration: 8 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+
+### Huzzah!
+
+There's the message in the output ... **Passed!**  ... **Passed:     7**
+
+We have 7 passing tests! 🎉
+
+| Fahrenheit   | Celsius     |    |
+|--------------|-------------|----|
+|       32°F   |       0°C   | ✅ |
+|      212°F   |     100°C   | ✅ |
+|      -40°F   |     -40°C   | ✅ |
+|       -4°F   |     -20°C   | ✅ |
+|     98.6°F   |      37°C   | ✅ |
+|    105.6°F   |    40.9°C   | ✅ |
+|  -456.67°F   | Exception   | ✅ |
+
+
+### I6 - Step 4: Refactor (tidy 🔧)
+
+In this step, let's refactor of our tests with parameterization.
+
+As the tests are written, it's clear that many of the test methods are exactly the same code, only using different values as input.
+
+`NUnit` offers ways to call the same test method with different input data, which is described in the [TestCase](https://docs.nunit.org/articles/nunit/writing-tests/attributes/testcase.html) section of the documentation.
+
+In the `TestScaleConverter.cs` file, replace the top two test methods in the `TestScaleConverter` class with this one parameterized test method:
+```csharp
+[TestCase(32, 0)]
+[TestCase(212, 100)]
+public void Test_FahrenheitToCelsius_WithValidValue_ExpectProperReturn(
+    decimal value, 
+    decimal expected)
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    var actual = classUnderTest.FahrenheitToCelsius(value);
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(expected));
+}
+```
+
+Notice that the test method name changed to `Test_FahrenheitToCelsius_WithValidValue_ExpectProperReturn`. This better describes that the test method is called with valid values and should have the expected return values.
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     7, Skipped:     0, Total:     7, Duration: 8 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+Gradually replace the test methods by adding a new `TestCase` attribute to the first test method in the test class. This is how the `TestScaleConverter.cs` file should look:
+```csharp
+using Physics.Temperature;
+
+namespace Tests.Unit.Physics.Temperature;
+
+public class TestScaleConverter
+{
+    [TestCase(32, 0)]
+    [TestCase(212, 100)]
+    [TestCase(-40, -40)]
+    [TestCase(-4, -20)]
+    [TestCase(98.6, 37)]
+    [TestCase(105.6, 40.9)]
+    public void Test_FahrenheitToCelsius_WithValidValue_ExpectProperReturn(
+        decimal value, 
+        decimal expected)
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        var actual = classUnderTest.FahrenheitToCelsius(value);
+
+        // Assert
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void Test_FahrenheitToCelsius_WhenMinus459pt67f_ExpectArgumentException()
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        TestDelegate act = () => classUnderTest.FahrenheitToCelsius(-456.67m);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act, "value cannot be less than -130°F");
+    }
+}
+```
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     7, Skipped:     0, Total:     7, Duration: 8 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+Now, instead of six test methods to maintain for each scenario, there is one method with six `TestCase` attributes. By using data to drive a single test method these many cases are tested with minimal code. This achieves a significant reduction in the amount of test code to maintain.
+
+## Iteration 7
+
+In the last iteration, we learned about another requirement: *Any temperature at or above 1000°F is invalid.*
+
+### I7 - Step 1: Think (🤔)
+
+The new requirement tells us that if the input is 1000°F then an exception should be thrown.
+
+### I7 - Step 2: Test (red 🔴)
+
+Let's write that failing test method at the end of the test class, as follows:
+```csharp
+[Test]
+public void Test_FahrenheitToCelsius_When1000f_ExpectArgumentException()
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    TestDelegate act = () => classUnderTest.FahrenheitToCelsius(1000);
+
+    // Assert
+    Assert.Throws<ArgumentException>(act, "value cannot be greater than or equal to 1000°F");
+}
+```
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+  Failed Test_FahrenheitToCelsius_When130pt01f_ExpectArgumentException [19 ms]
+  Error Message:
+     value cannot be greater than -130°F
+  Expected: <System.ArgumentException>
+  But was:  null
+
+  Stack Trace:
+     at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When130pt01f_ExpectArgumentException() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 50
+
+1)    at Tests.Unit.Physics.Temperature.TestScaleConverter.Test_FahrenheitToCelsius_When130pt01f_ExpectArgumentException() in /Users/ ... /code/ch02/Tests.TemperatureConverter/TestScaleConverter.cs:line 50
+
+
+
+Failed!  - Failed:     1, Passed:     7, Skipped:     0, Total:     8, Duration: 23 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+There it is, one failing test.
+
+### I7 - Step 3: Code (green ✅)
+
+Write the minimum amount of code to pass the test, as follows:
+```csharp
+namespace Physics.Temperature;
+
+public class ScaleConverter
+{
+    public decimal FahrenheitToCelsius(decimal value) {
+        if(value < -130) {
+            throw new ArgumentException("value cannot be less than -130°F");
+        }
+        if(value >= 1000) {
+            throw new ArgumentException("value cannot be greater than or equal to 1000°F");
+        }
+        return Math.Round((5 * (value -32)) / 9, 1);
+    }
+}
+```
+
+
+Save the `ScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     8, Skipped:     0, Total:     8, Duration: 7 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+
+
+### Huzzah!
+
+There's the message in the output ... **Passed!**  ... **Passed:     8**
+
+We have 8 passing tests! 🎉
+
+And the testing scenarios now look like this:
+
+| Fahrenheit   | Celsius     |    |
+|--------------|-------------|----|
+|       32°F   |       0°C   | ✅ |
+|      212°F   |     100°C   | ✅ |
+|      -40°F   |     -40°C   | ✅ |
+|       -4°F   |     -20°C   | ✅ |
+|     98.6°F   |      37°C   | ✅ |
+|    105.6°F   |    40.9°C   | ✅ |
+|  -456.67°F   | Exception   | ✅ |
+|     1000°F   | Exception   | ✅ |
+
+
+### I7 - Step 4: Refactor (tidy 🔧)
+
+In this step, let's refactor of our tests again with parameterization for our "expected exception" test methods.
+
+In the `TestScaleConverter.cs` file, replace the bottom two test methods in the `TestScaleConverter` class with this one parameterized test method:
+```csharp
+[TestCase(-456.67, "value cannot be less than -130°F")]
+[TestCase(1000, "value cannot be greater than or equal to 1000°F")]
+public void Test_FahrenheitToCelsius_WithInvalidValue_ExpectArgumentException(
+    decimal value,
+    string expectedMessage)
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    TestDelegate act = () => classUnderTest.FahrenheitToCelsius(value);
+
+    // Assert
+    Assert.Throws<ArgumentException>(act, expectedMessage);
+}
+```
+
+Notice the test method name is changed to reflect the test case are with the "invalid values" and the expectation is that the `ArgumentException` will be thrown.
+
+Save the `TestScaleConverter.cs` file.
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     8, Skipped:     0, Total:     8, Duration: 8 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+Notice that the test class now has just two test methods. We are data-driving both the valid and invalid scenarios.
+
+
+## Iteration 8
+
+There are a lot of untested valid scenarios. Basically, every tenth of a degree Fahrenheit from 999.9°F to -130°F is a valid value.
+
+What do we really want to test?
+
+### I8 - Step 1: Think (🤔)
+
+Here are the values I think about most often:
+- Values that behave uniquely, such as zero or one
+- Maximum values
+- Minimum values
+- Values just on a boundary
+- Values just within a boundary
+- Values just outside a boundary
+
+Based on that analysis, here are the values that might be missing:
+
+| Fahrenheit  | What to check?            | Celsius     |
+|-------------|---------------------------|-------------|
+|        0°F  | Zero Fahrenheit           |     -17.8°C |
+|        1°F  | One Fahrenheit            |     -17.2°C |
+|    999.9°F  | Maximum valid value       |     537.7°C |
+|     -130°F  | Minimum valid value       |       -90°C |
+|   -130.1°F  | Just below minimum value  |   Exception |
+|   1000.1°F  | Just above maximum value  |   Exception |
+
+Let's fill in this table as a part of this this iteration
+
+### I8 - Step 2: Test (red 🔴)
+
+The good news is that now that our test methods are driven by data, we simply add a new test case to an existing test method.
+
+To follow the laws of TDD, I recommend you add the `TestCase` attribute as a failing test by using an expected value you're confident is not expected, like this:
+```csharp
+    [TestCase(0, 9999)]
+```
+
+Run `dotnet test -v m --nologo` to see the test fail. You expect it to fail.
+
+Then, change the test case to:
+```csharp
+    [TestCase(0, -17.8)]
+```
+
+Run `dotnet test -v m --nologo` to see the test pass.
+
+Continue this TDD cycle for the six test cases defined in the table during Step 1 of this iteration.
+
+### I8 - Step 3: Code (green ✅)
+
+After implementing these six new test cases, the `TestScaleConverter.cs` file should have test code that looks like this:
+```csharp
+using Physics.Temperature;
+
+namespace Tests.Unit.Physics.Temperature;
+
+public class TestScaleConverter
+{
+    [TestCase(32, 0)]
+    [TestCase(212, 100)]
+    [TestCase(-40, -40)]
+    [TestCase(-4, -20)]
+    [TestCase(98.6, 37)]
+    [TestCase(105.6, 40.9)]
+    [TestCase(0, -17.8)]
+    [TestCase(1, -17.2)]
+    [TestCase(999.9, 537.7)]
+    [TestCase(-130, -90)]
+    public void Test_FahrenheitToCelsius_WithValidValue_ExpectProperReturn(
+        decimal value, 
+        decimal expected)
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        var actual = classUnderTest.FahrenheitToCelsius(value);
+
+        // Assert
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(-456.67, "value cannot be less than -130°F")]
+    [TestCase(1000, "value cannot be greater than or equal to 1000°F")]
+    [TestCase(-130.1, "value cannot be less than -130°F")]
+    [TestCase(1000.1, "value cannot be greater than or equal to 1000°F")]
+    public void Test_FahrenheitToCelsius_WithInvalidValue_ExpectArgumentException(
+        decimal value,
+        string expectedMessage)
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        TestDelegate act = () => classUnderTest.FahrenheitToCelsius(value);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act, expectedMessage);
+    }
+}
+```
+
+Execute unit tests by running:
+```bash
+dotnet test -v m --nologo
+```
+
+This returns the following output:
+```bash
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    14, Skipped:     0, Total:    14, Duration: 9 ms - Tests.TemperatureConverter.dll (net8.0)
+```
+
+
+### Huzzah!
+
+There's the message in the output ... **Passed!**  ... **Passed:     14**
+
+We have 14 passing tests! 🎉
+
+
+### I8 - Step 4: Refactor (tidy 🔧)
+
+During that Steps 2 and 3 I found that my test code needs to be improved.
+
+The test method was not failing when the exception message was incorrect.
+
+This is how I corrected the test method:
+```csharp
+[TestCase(-456.67, "value cannot be less than -130°F")]
+[TestCase(1000, "value cannot be greater than or equal to 1000°F")]
+[TestCase(-130.1, "value cannot be less than -130°F")]
+[TestCase(1000.1, "value cannot be greater than or equal to 1000°F")]
+public void Test_FahrenheitToCelsius_WithInvalidValue_ExpectArgumentException(
+    decimal value,
+    string expectedMessage)
+{
+    // Arrange
+    var classUnderTest = new ScaleConverter();
+
+    // Act
+    TestDelegate act = () => classUnderTest.FahrenheitToCelsius(value);
+
+    // Assert
+    var exception = Assert.Throws<ArgumentException>(act);
+    Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+}
+```
+
+Now, if the error message is not as expected, there is an error reported.
+
+
+## Conclusion
+
+In this chapter we learned about Test Driven Development (TDD).
+
+Some of the topics covered include:
+* The TDD Cycle
+* The Three Rules of TDD
+* TDD guided by a truth table
+* TDD guided by ZOMBIES
+* Automated tests liberate refactoring.
+
+Think about how you might add a parameter, such as `precision`, to the `FahrenheitToCelsius()` method so that the result can be rounded to `precision` digits after the decimal point.
+
+Try some of the following on your own.
+  - Using test-driven development, add a new test to define the behavior of setting the precision to 2.
+  - See just that one new test fails, as expected.
+  - Add only enough code to get that one test to pass.
+  - Make sure that all the existing tests pass with the new parameter, without changing the test code too much (hint: consider a default value like `int precision=1`)
+  - Refactor by using the test suite as a safety net to ensure that everything continues to work as intended.
