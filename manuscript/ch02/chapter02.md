@@ -56,7 +56,7 @@ The TDD cycle is:
 3. Code ✅ (often called "Green")
 4. Refactor 🔧
 
-![TDD Cycle](../resources/TDD_cycle.png)
+![TDD Cycle](../resources/TDD_cycle.png "TDD Cycle")
 
 ## Before We Start Coding
 

@@ -9,6 +9,6 @@ public class ScaleConverter
         if(value >= 1000) {
             throw new ArgumentException("value cannot be greater than or equal to 1000°F");
         }
-        return Math.Round((5 * (value -32)) / 9, 1);
+        return Math.Round((5 * (value - 32)) / 9, precision);
     }
 }

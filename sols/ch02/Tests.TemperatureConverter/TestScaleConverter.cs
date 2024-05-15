@@ -28,13 +28,12 @@ public class TestScaleConverter
         Assert.That(actual, Is.EqualTo(expected));
     }
 
-    [TestCase(-456.67, "value cannot be less than -130°F")]
-    [TestCase(1000, "value cannot be greater than or equal to 1000°F")]
-    [TestCase(-130.1, "value cannot be less than -130°F")]
-    [TestCase(1000.1, "value cannot be greater than or equal to 1000°F")]
+    [TestCase(-456.67)]
+    [TestCase(1000)]
+    [TestCase(-130.1)]
+    [TestCase(1000.1)]
     public void Test_FahrenheitToCelsius_WithInvalidValue_ExpectArgumentException(
-        decimal value,
-        string expectedMessage)
+        decimal value)
     {
         // Arrange
         var classUnderTest = new ScaleConverter();
@@ -43,7 +42,42 @@ public class TestScaleConverter
         TestDelegate act = () => classUnderTest.FahrenheitToCelsius(value);
 
         // Assert
-        var exception = Assert.Throws<ArgumentException>(act);
-        Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+        Assert.Throws<ArgumentException>(act);
+    }
+
+    [TestCase(-456.67, "value cannot be less than -130°F")]
+    [TestCase(1000, "value cannot be greater than or equal to 1000°F")]
+    [TestCase(-130.1, "value cannot be less than -130°F")]
+    [TestCase(1000.1, "value cannot be greater than or equal to 1000°F")]
+    public void Test_FahrenheitToCelsius_WithInvalidValue_ExpectExceptionMessage(
+        decimal value,
+        string expectedMessage)
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        var actual = Assert.Throws<ArgumentException>(
+            () => classUnderTest.FahrenheitToCelsius(value));
+
+        // Assert
+        Assert.That(actual.Message, Is.EqualTo(expectedMessage));
+    }
+
+    [TestCase(1, 2, -17.22)]
+    [TestCase(7, 3, -13.889)]
+    public void Test_FahrenheitToCelsius_WithValidPrecision_ExpectProperRounding(
+        decimal value,
+        int precision, 
+        decimal expected)
+    {
+        // Arrange
+        var classUnderTest = new ScaleConverter();
+
+        // Act
+        var actual = classUnderTest.FahrenheitToCelsius(value, precision);
+
+        // Assert
+        Assert.That(actual, Is.EqualTo(expected));
     }
 }
