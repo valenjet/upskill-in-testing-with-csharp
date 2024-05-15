@@ -34,18 +34,17 @@ The key points to focus on:
 - Use a `TestsContext` class to organize tests
 - Utilize `TestHelper` classes for reusable test code
 - Implement data-driven tests to cover more scenarios
-- Employ boundary-value analysis for edge cases
-- Use stubs for isolation in tests
-- Limit to one mock per test when verifying interactions
 
 Let's get to it and make our test code as robust as our Production code.
 
 
-## Focus on Writing Maintainable Test Code
+## Maintainable Test Code
 
 Let's discuss an often-overlooked aspect of software development: ensuring our test code is not only functional but also readable and maintainable. It’s a common scenario: after investing significant effort into writing tests, they become neglected because they’re overly complex or prone to frequent failures. This can be incredibly frustrating and may lead to questioning the value of the effort.
 
 ### Test Code Maintainability
+
+> Focus on Writing Maintainable Test Code
 
 One of the primary reasons test code falls by the wayside is its difficulty to maintain. We've all encountered test code that feels hastily assembled and is challenging to decipher or repair. However, test code, like any other code, requires careful attention to remain effective. Testing a single method may necessitate multiple test cases, and if each case is burdensome to maintain, the process becomes tedious.
 
@@ -64,6 +63,8 @@ Here are several practices to ensure maintainable test code:
 By adhering to these practices, we can ensure that our test code remains maintainable and continues to provide value over time.
 
 ### Naming Convention
+
+> Adopt an Effective Naming Convention
 
 Diving into the topic of naming standards for unit tests, you'll find common patterns described by Roy Osherove in his book [The Art of Unit Testing](https://www.manning.com/books/the-art-of-unit-testing-third-edition). Microsoft provides their take on the topic in [Unit testing best practices with .NET Core and .NET Standard](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices). I fully endorse what is described in these two resource.
 
@@ -94,19 +95,37 @@ For the person looking at the test code, three important facts need to be clear 
 
 The test method naming convention fits a readability pattern and clearly communicates the intention of the test. The following are examples of test methods that follow the naming convention:
 
-- `Test_ComputePayment_WithProvidedLoanData_ExpectProperPaymentAmount`
-- `Test_ApproveLoan_WhenLoanDataIsValid_ExpectLoanSaveCalledExactlyOnce`
-- `Test_ComputeBalance_WithNegativeBalanceScenarios_ExpectOutOfRangeError`
+* `Test_ComputePayment_WithProvidedLoanData_ExpectProperAmount`
+* `Test_ApproveLoan_WhenLoanDataIsValid_ExpectLoanSaveCalledExactlyOnce`
+* `Test_ComputeBalance_ForNegativeBalanceScenarios_ExpectOutOfRangeException`
 
 This test method naming convention is used by the code samples and throughout the book.
 
 The important principle is to establish a naming convention that clearly states how the system-under-test is expected to behave under the conditions arranged by the test.
 
+#### Namespaces
+
+The naming convention starts by using the same namespace as the class-under-test and adds a prefix. The prefix has two terms; the word `Tests` and a category for the tests. Both terms are separated by a period. Categories that you might use include names like `Unit`, `Surface`, or `Stability`. An example of the name of an assembly with integration tests is `Tests.Integration.Lender.Slos.Dal.dll`.
+
+Adding the word `Tests` to the beginning of every namespace may seem redundant; however, it is important for several key reasons. Test assemblies that begin with `Tests.*` ... 
+* Are clearly understood as being for testing use only.
+* Can easily be sorted from production assemblies, allowing you to prevent test assemblies from going into production.
+* Can be discovered by convention in build scripts and other CI techniques.
+* Can be excluded, through the use of wild-carding, from code coverage tools and other program analysis.
+
+The category name is also important because various testing categories have different setup and configuration requirements. The namespace lets everyone know what to expect:
+* `Tests.Unit.*` require absolutely no setup or configuration and must execute quickly. Unit tests must always run as automated tests.
+* `Tests.Integration.*` require significant setup and configuration. These tests should be run manually.
+* `Tests.Seam.*` are specialized automated integration tests, called seam tests. These require a one-time setup and configuration, but can be run by developers as automated integration tests.
+* `Tests.Stability.*` require setup and configuration and are normally performed after deployment on an integration server. These tests should run automatically by the CI server.
+
+Choose a test project and assembly name to be consistent with these namespaces to reap the benefits of this convention.
+
 #### Test Classes
 
-When maintaining test code, you will need to quickly locate all tests for a specific class. In order to do this, take the name of the class you want to write tests for and, in the test project, create a *Test Class* with the same name prefixed with `Test`.
+When maintaining test code, you will need to quickly locate all tests for a specific class. In order to do this, take the name of the class you want to write tests for and, in the test project, create a *Test Class* with the same name prefixed with `Test`. This naming convention uses a `Test+<ClassUnderTest>` format.
 
-For a class called `ScaleConverter`, create a test class in your test project named `TestScaleConverter`. This test class should be saved in a file names `TestScaleConverter.cs`.
+For the class-under-test named `StudentDal`, create a test class in your test project named `TestStudentDal`. This test class should be saved in a file named `TestStudentDal.cs`.
 
 The one-test-class-per-class pattern mentioned in [xUnit Test Patterns: Refactoring Test Code](http://xunitpatterns.com/Testcase%20Class%20per%20Class.html) by Gerard Meszaros "is a good starting point when we don't have very many Test Methods or we are just starting to write tests for our [system under test]." There are other patterns, but let's stick to this one.
 
@@ -124,20 +143,20 @@ Here is an example of the `tests/` file structure:
 ```
 .
 ├── src
-│   └── Physics.Temperature
-│       ├── Physics.Temperature.csproj
-│       └── ScaleConverter.cs
+│   └── Valen.Slos.Model
+│       ├── Valen.Slos.Model.csproj
+│       └── Loan.cs
 ├── tests
-│   └── Tests.Unit.Physics.Temperature
-│       ├── Tests.Unit.Physics.Temperature.csproj
-│       └── TestScaleConverter.cs
+│   └── Tests.Unit.Valen.Slos.Model
+│       ├── Tests.Unit.Valen.Slos.Model.csproj
+│       └── TestLoan.cs
 ```
 
 
 
 #### Naming Is Important
 
-Since test code is a lot different than production code and serves a completely different purpose that the code-under-test, we name test functions differently.
+Since test code is a lot different than production code and serves a completely different purpose that the code-under-test, we name test methods differently.
 
 We use a naming convention for our test code that's clear and makes our lives easier when test fail.
 
@@ -155,9 +174,11 @@ The naming convention presented here is helpful in these ways:
 
 ### Test Method Structure
 
-It is imperative for the test function structure to adhere to a consistent convention. This uniformity ensures that all developers within a project can easily locate and comprehend the test code. Adherence to a common convention accelerates familiarity and efficiency, especially when extended across the entire organization. Such consistency facilitates smoother transitions for developers joining new projects or initiating new endeavors.
+It is very helpful for the test function structure to adhere to a consistent convention. This uniformity ensures that all developers within a project can easily locate and comprehend the test code. Adherence to a common convention accelerates familiarity and efficiency, especially when extended across the entire organization. Such consistency facilitates smoother transitions for developers joining new projects or initiating new endeavors.
 
 ### Arrange-Act-Assert Framework
+
+> Use the Arrange-Act-Assert (3-As) Pattern
 
 While various methodologies exist for structuring test functions, the Arrange-Act-Assert (triple-A or 3As) framework stands out for its effectiveness and widespread adoption. This framework segments the test function into three distinct sections:
 
@@ -169,12 +190,36 @@ While various methodologies exist for structuring test functions, the Arrange-Ac
 
 Incorporating comments such as `// Arrange`, `// Act`," and `// Assert` within the test code is a recommended practice. These comments serve as clear markers delineating each section, thereby enhancing the readability and maintainability of the test code.
 
-Here is an example that uses the `TestLoan` class to group tests that test the `compute_payment()` method of the `Loan` class.
+Here is an example that uses the `TestLoan` class to group tests that test the `ComputePayment` method of the `Loan` class.
+
+#### Listing 3-1: Example Using the Test Code Naming Convention
 
 ```csharp
-// To Do: 
-```
+using Valen.Slos.Model;
 
+namespace Tests.Unit.Valen.Slos.Model;
+
+public class TestLoan
+{
+    [Test]
+    public void Test_ComputePayment_WhenTermIs300_ExpectPaymentIs126pt39()
+    {
+        // Arrange
+        var classUnderTest = 
+            new Loan
+            {
+                Principal = 12000m,
+                AnnualPercentageRate = 12m,
+            };
+
+        // Act
+        decimal actual = classUnderTest.ComputePayment(300);
+
+        // Assert
+        Assert.That(actual, Is.EqualTo(126.39m));
+    }
+}
+```
 
 ### Keep Tests Short
 
@@ -198,8 +243,27 @@ In the context of constructing a test, particularly within the "Act" section, it
 
 Consider a scenario in a `NUnit` framework where the "Act" section comprises five lines of code. Should an error arise within the `Get` method, distinguishing whether the first or second invocation of `Get` is at fault becomes less straightforward. Moreover, in the event of a test failure, identifying the specific action line that triggered the issue becomes a challenge. This underscores the importance of limiting actions within the "Act" phase to enhance test clarity and facilitate easier troubleshooting.
 
+#### Listing 3-2: Too many actions in the Act step
 ```csharp
-// To Do: Listing 3-3: Too many actions in the Act step
+[Test(Description = "Too many action steps")]
+public void Test_Save_WhenPrincipalIsChanged_ExpectNewPrincipalValueInDatabase()
+{
+    // Arrange
+    Application classUnderTest = new Application();
+    classUnderTest.Principal = 999.91m;
+    classUnderTest.Save();
+    int id = classUnderTest.Id;
+
+    // Act
+    classUnderTest.Get(id);
+    classUnderTest.Principal = 1009.81m;
+    classUnderTest.Save();
+    classUnderTest.Get(id);
+    decimal actual = classUnderTest.Principal;
+
+    // Assert
+    Assert.That(actual, Is.EqualTo(1009.81m));
+}
 ```
 
 ### Simplification of Action Steps in Test Functions
@@ -210,8 +274,28 @@ For the purpose of maintaining high readability and clarity within test code, it
 
 Additionally, something worth noting is the use of the hard-coded value `97` at multiple points within the test. Subsequent sections will discuss techniques to parameterize such values, allowing them to be injected into the test method as arguments, thereby enhancing the test's flexibility and reducing redundancy.
 
+#### Listing 3-4: Only one action in the Act step
 ```csharp
-// To Do: Listing 3-4: Only one action in the Act step
+[TestCase(Description = "One action step")]
+public void Test_Save_WhenPrincipalIsChanged_ExpectNewPrincipalValueInDatabase()
+{
+    // Arrange
+    var expectedPrincipal = 1009.81m;
+    TestApplicationContext.SetupTestDatabase("TestApplicationDal_Scenario01.xml");
+
+    var classUnderTest = TestApplicationContext.CreateInstance(97);
+    classUnderTest.Principal = expectedPrincipal;
+
+    // Act
+    classUnderTest.Save();
+
+    // Assert
+    var actual = TestApplicationContext.Retrieve<decimal>(
+        "Principal",
+        "Application",
+        string.Format("[Id] = {0}", 97));
+    Assert.That(actual, Is.EqualTo(expectedPrincipal));
+}
 ```
 
 ### Primary Assertion
@@ -228,7 +312,12 @@ This principle ensures that:
 
 For clarity and precision, tests should avoid including more than one primary assertion.
 
-Consider a test method named `Test_ExpectCorrectPaymentAmountEq126pt39`; its primary assertion should validate that the actual payment amount matches the expected value of $126.39.
+For example, if the expectation in a test method name is *expect the correct payment amount* then the primary assertion statement ought to be:
+```csharp
+    // Assert
+    var expectedPaymentAmount = 126.39m;
+    Assert.That(actual, Is.Equal(expectedPaymentAmount));
+```
 
 This approach minimizes ambiguity, ensuring that if the test fails, the reason is clearly related to the test's primary focus.
 
@@ -246,9 +335,11 @@ Assertions can be categorized based on their verification methods, including:
 | Boolean Checks        | Assessing the truthfulness of an expression. |
 | Constraint-Based      | Evaluating whether an instance meets a set of defined constraints. |
 
+The constraint-based syntax (called using the `Assert.That` method in NUnit) is very powerful. In the NUnit framework many legacy assert methods implement their behavior by wrapping a call to `Assert.That`. The constraint-based syntax also allows you to implement your own custom constraints.
+
 #### Primary Versus Secondary Assertions
 
-The concept of a primary assertion raises the question of secondary assertions.
+The concept of a primary assertion raises the question: What about *secondary* assertions?
 
 Secondary assertions are additional checks that, while useful, are less critical than the primary assertion. They often _precede_ the primary assertion to clarify any _secondary_ reasons why a test may fail. Secondary assertions are helpful if they make explicit any implicit assumptions by turning them into direct assertions. This often makes for clearer understanding.
 
@@ -256,8 +347,25 @@ Secondary assertions are additional checks that, while useful, are less critical
 
 In addition to secondary assertions within the _Assert_ section, "guard assertions" in the _Arrange_ section help clarify the conditions necessary for the _Act_ section to proceed correctly. These assertions explicitly state assumptions critical to the test's setup, providing clarity and avoiding ambiguous failures.
 
+#### Listing 3-5: Guard and Secondary Assertion
 ```csharp
-// To Do: Listing 3-5: Guard and Secondary Assertion
+[Test(Description = "Guard and secondary assertions")]
+public void Test_Save_WithScenario02_ExpectHighSchoolStateIsVirginia()
+{
+    // Arrange
+    TestApplicationContext.SetupTestDatabase("TestApplicationDal_Scenario02.xml");
+    var application = TestApplicationContext.CreateInstance(73);
+    var classUnderTest = application.Student;
+
+    Assert.That(classUnderTest, Is.Not.Null);  // This is a guard assert
+
+    // Act
+    School highSchool = classUnderTest.HighSchool;
+
+    // Assert
+    Assert.That(highSchool, Is.Not.Null);  // This is secondary assert
+    Assert.That(highSchool.State, Is.EqualTo("Virginia"));
+}
 ```
 
 #### Caution Against Over-Specification
@@ -266,16 +374,61 @@ While guard and secondary assertions are useful, it's important to avoid over-sp
 
 Secondary assertions _should only support_ reaching the primary assertion, without introducing unnecessary complexity or maintenance overhead.
 
+#### Listing 3-6: Over-Specified Expectations
 ```csharp
-// To Do: Listing 3-6: Over-Specified Expectations
+[Test(Description = "Over-specified expectations")]
+public void Test_ComputePayment_WhenInvalidTermInMonthsIsZero_ExpectArgumentOutOfRangeException()
+{
+    // Arrange
+    Loan loan =
+        new Loan
+        {
+            Principal = 7499,
+            AnnualPercentageRate = 1.79m,
+        };
+    Assert.That(loan, Is.Not.Null);
+
+    // Act
+    TestDelegate act = () => loan.ComputePayment(0);
+
+    // Assert
+    ArgumentOutOfRangeException exception =
+        Assert.Throws<ArgumentOutOfRangeException>(act);
+    Assert.That(exception.ParamName, Is.EqualTo("termInPeriods"));
+    Assert.That(exception.Message, Is.EqualTo(
+        "Specified argument was out of the range of valid values.\r\n" +
+        "Parameter name: termInPeriods"));
+}
 ```
 
-Now take a look at Listing 3-6; there are two assertions. Together these assertions over-specify the requirements of the code-under-test:
+Take a look at Listing 3-6. At the end of the *Arrange* section there is a guard assertion that asserts that loan is not null. There really is no reason to do that because .NET takes care of constructing the new Loan; the test code is in effect testing that the C# compiler works. You can safely remove that line.
+
+Now take a look at the *Assert* section in Listing 3-6; there are three assertions. The last two assertions over-specify the requirements of the code-under-test:
 - Is there really a requirement that the `ComputePayment` method’s parameter be named `TermInMonths`?
-- Will the message in the exception change over time?
+- Will the message in the exception change over time? Isn't that okay?
 
-If we really need to test the exception message, it should really be in a separate test method.
+If we really need to test the exception message, it should be in a separate test method.
 
+By looking at the test method’s name, a better implementation of Listing 3-6 is suggested as follows:
+```csharp
+[Test]
+public void ComputePayment_WhenInvalidTermInMonthsIsZero_ExpectArgumentOutOfRangeException ()
+{
+  // Arrange
+  Loan loan =
+    new Loan
+    {
+      Principal = 7499,
+      AnnualPercentageRate = 1.79m,
+    };
+
+  // Act
+  TestDelegate act = () => loan.ComputePayment(0);
+
+  // Assert
+  Assert.Throws<ArgumentOutOfRangeException>(act);
+}
+```
 
 ### Test Context Classes
 
@@ -361,8 +514,35 @@ Data-driven testing allows for the efficient checking of multiple scenarios usin
 
 The `NUnit` framework supports parameterized testing. Listing 3-9 shows how to use the `TestCase` attribute for data-driven testing.
 
+#### Listing 3-9: Data-Driven Test Cases
 ```csharp
-// To Do: Listing 3-9: Using the `parametrize` keyword
+[TestCase(7499, 1.79, 0, 72.16)]
+[TestCase(7499, 1.79, -1, 72.16)]
+[TestCase(7499, 1.79, -73, 72.16)]
+[TestCase(7499, 1.79, int.MinValue, 72.16)]
+[TestCase(7499, 1.79, 361, 72.16)]
+[TestCase(7499, 1.79, 2039, 72.16)]
+[TestCase(7499, 1.79, int.MaxValue, 72.16)]
+public void Test_ComputePayment_WithInvalidTermInMonths_ExpectArgumentOutOfRangeException(
+    decimal principal,
+    decimal annualPercentageRate,
+    int termInMonths,
+    decimal expectedPaymentPerPeriod)
+{
+    // Arrange
+    var loan =
+        new Loan
+        {
+            Principal = principal,
+            AnnualPercentageRate = annualPercentageRate,
+        };
+
+    // Act
+    TestDelegate act = () => loan.ComputePayment(termInMonths);
+
+    // Assert
+    Assert.Throws<ArgumentOutOfRangeException>(act);
+}
 ```
 
 #### Practical Tips for Data-Driven Testing
@@ -402,9 +582,38 @@ The following C# code exemplifies the application of best practices in unit test
 - Data-driven approach to evaluate multiple scenarios within a single test method
 - Utilization of prime numbers to enhance the reliability of test outcomes and facilitate debugging
 
-
 Listing 3-10 shows test code that follows the recommended approach. It applies a data-driven approach to validate the functionality of a loan payment computation across several scenarios. By adhering to these practices, you can be sure that your tests are both efficient and effective, facilitating easier maintenance and debugging.
 
+#### Listing 3-10: Putting it all together
 ```csharp
-// To Do: Listing 3-10: Putting it all together
+using Valen.Slos.Model;
+
+namespace Tests.Unit.Valen.Slos.Model;
+
+public class TestLoan
+{
+    [TestCase(7499, 1.79, 113, 72.16)]
+    [TestCase(8753, 6.53, 139, 89.92)]
+    [TestCase(61331, 7.09, 367, 409.5)]
+    public void ComputePayment_WithProvidedLoanData_ExpectProperMonthlyPayment(
+        decimal principal,
+        decimal annualPercentageRate,
+        int termInMonths,
+        decimal expectedPaymentPerPeriod)
+    {
+        // Arrange
+        var loan =
+            new Loan
+            {
+                Principal = principal,
+                AnnualPercentageRate = annualPercentageRate,
+            };
+
+        // Act
+        var actual = loan.ComputePayment(termInMonths);
+
+        // Assert
+        Assert.That(actual, Is.EqualTo(expectedPaymentPerPeriod));
+    }
+}
 ```
