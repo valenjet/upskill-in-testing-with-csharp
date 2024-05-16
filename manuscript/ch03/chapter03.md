@@ -105,7 +105,7 @@ The important principle is to establish a naming convention that clearly states 
 
 #### Namespaces
 
-The naming convention starts by using the same namespace as the class-under-test and adds a prefix. The prefix has two terms; the word `Tests` and a category for the tests. Both terms are separated by a period. Categories that you might use include names like `Unit`, `Surface`, or `Stability`. An example of the name of an assembly with integration tests is `Tests.Integration.Lender.Slos.Dal.dll`.
+The naming convention starts by using the same namespace as the class-under-test and adds a prefix. The prefix has two terms; the word `Tests` and a category for the tests. Both terms are separated by a period. Categories that you might use include names like `Unit`, `Surface`, or `Stability`. An example of the name of an assembly with integration tests is `Tests.Integration.Valen.Slos.Dal.dll`.
 
 Adding the word `Tests` to the beginning of every namespace may seem redundant; however, it is important for several key reasons. Test assemblies that begin with `Tests.*` ... 
 * Are clearly understood as being for testing use only.
@@ -135,8 +135,8 @@ By using a *Test Class* approach, `NUnit` allows us to group tests together usin
 
 #### Directory and file structure
 
-- For C# class files, we'll prefix them with `Test`, like `TestScaleConverter.cs`
-- For .NET class library project files, we'll prefix them with `Tests.`, like `Tests.Unit.Physics.Temperature.csproj`
+- For C# class files, we'll prefix them with `Test`, like `TestLoan.cs`
+- For .NET class library project files, we'll prefix them with `Tests.`, like `Tests.Unit.Valen.Slos.Model.csproj`
 - Putting all the tests into an extra directory outside the system-under-test code is useful.
 
 Here is an example of the `tests/` file structure:
@@ -268,7 +268,7 @@ public void Test_Save_WhenPrincipalIsChanged_ExpectNewPrincipalValueInDatabase()
 
 ### Simplification of Action Steps in Test Functions
 
-In the example provided as Listing 3-4, the test method is structured to contain a single action within the _Act_ section, specifically invoking the `save` method of the `Application` class. This illustrates the principle of focusing each test on a specific action, which is stated in the test function's name. Notice that the _Arrange_ section is intentionally more involved. We'll explore that topic in a later discussion.
+In the example provided as Listing 3-4, the test method is structured to contain a single action within the _Act_ section, specifically invoking the `Save` method of the `Application` class. This illustrates the principle of focusing each test on a specific action, which is stated in the test function's name. Notice that the _Arrange_ section is intentionally more involved. We'll explore that topic in a later discussion.
 
 For the purpose of maintaining high readability and clarity within test code, it's recommended that you limit the _Act_ section to a single line of action. This practice ensures that the test's intent remains focused and straightforward.
 
@@ -595,7 +595,7 @@ public class TestLoan
     [TestCase(7499, 1.79, 113, 72.16)]
     [TestCase(8753, 6.53, 139, 89.92)]
     [TestCase(61331, 7.09, 367, 409.5)]
-    public void ComputePayment_WithProvidedLoanData_ExpectProperMonthlyPayment(
+    public void Test_ComputePayment_WithProvidedLoanData_ExpectProperMonthlyPayment(
         decimal principal,
         decimal annualPercentageRate,
         int termInMonths,

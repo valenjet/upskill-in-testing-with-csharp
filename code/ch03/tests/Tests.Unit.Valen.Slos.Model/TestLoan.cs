@@ -53,7 +53,7 @@ public class TestLoan
     [TestCase(7499, 1.79, 113, 72.16)]
     [TestCase(8753, 6.53, 139, 89.92)]
     [TestCase(61331, 7.09, 367, 409.5)]
-    public void ComputePayment_WithProvidedLoanData_ExpectProperMonthlyPayment(
+    public void Test_ComputePayment_WithProvidedLoanData_ExpectProperMonthlyPayment(
         decimal principal,
         decimal annualPercentageRate,
         int termInMonths,
